@@ -1,7 +1,6 @@
-import { healthDataTopic } from '../topics/create-topics';
 import { kafka } from '../utils/broker-client';
-
-type Metrics = 'heartRate' | 'sleepDuration';
+import { healthDataTopic } from '../utils/consts';
+import { Metrics } from '../utils/types';
 
 const metricType = process.argv[2] as Metrics;
 const metricValue = process.argv[3];
@@ -10,7 +9,7 @@ async function run() {
   try {
     const producer = kafka.producer();
     await producer.connect();
-    console.log('Producer connected successfully!');
+    console.log('Smart watch producer connected successfully!');
 
     const partition = metricType === 'heartRate' ? 0 : 1;
 
@@ -20,7 +19,7 @@ async function run() {
         {
           value: JSON.stringify({
             metricType,
-            metricValue,
+            metricValue: parseFloat(metricValue),
           }),
           partition,
         },

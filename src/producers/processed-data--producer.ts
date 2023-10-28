@@ -1,12 +1,13 @@
-import { processedHealthDataTopic } from '../topics/create-topics';
 import { kafka } from '../utils/broker-client';
+import { processedHealthDataTopic } from '../utils/consts';
+import { ProcessedDataPayload } from '../utils/types';
 
-export async function sendEvent(payload: any) {
+export async function sendEvent(
+  payload: ProcessedDataPayload & { result: string }
+) {
   try {
     const producer = kafka.producer();
     await producer.connect();
-    console.log('Producer connected successfully!');
-
     const result = await producer.send({
       topic: processedHealthDataTopic,
       messages: [
@@ -16,12 +17,12 @@ export async function sendEvent(payload: any) {
       ],
     });
     console.log(
-      `Message sent successfully to topic ${result[0].topicName} and partition ${result[0].partition}`
+      `Message ${JSON.stringify(payload)} sent successfully to topic ${
+        result[0].topicName
+      }`
     );
     await producer.disconnect();
   } catch (error) {
     console.error(`An error occured ${error}`);
-  } finally {
-    process.exit();
   }
 }

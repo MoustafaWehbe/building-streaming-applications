@@ -1,11 +1,14 @@
-import { processedHealthDataTopic } from '../topics/create-topics';
 import { kafka } from '../utils/broker-client';
-
-const consumerGroup = 'groupForDataConsumers';
+import {
+  consumerGroupForProcessedHealthDataTopic,
+  processedHealthDataTopic,
+} from '../utils/consts';
 
 async function run() {
   try {
-    const consumer = kafka.consumer({ groupId: consumerGroup });
+    const consumer = kafka.consumer({
+      groupId: consumerGroupForProcessedHealthDataTopic,
+    });
     await consumer.connect();
     console.log('Health data processor (consumer) connected successfully!');
 
@@ -16,9 +19,7 @@ async function run() {
 
     await consumer.run({
       eachMessage: async (result) => {
-        console.log(
-          `Received message: ${result.message.value} on partition ${result.partition}`
-        );
+        console.log(`Mobile phone received: ${result.message.value}`);
       },
     });
   } catch (error) {

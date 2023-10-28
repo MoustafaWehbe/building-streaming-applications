@@ -1,7 +1,5 @@
 import { kafka } from '../utils/broker-client';
-
-export const healthDataTopic = 'health_data';
-export const processedHealthDataTopic = 'processed_health_data';
+import { healthDataTopic, processedHealthDataTopic } from '../utils/consts';
 
 async function run() {
   try {

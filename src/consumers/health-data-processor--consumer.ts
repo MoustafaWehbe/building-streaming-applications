@@ -1,12 +1,16 @@
 import { sendEvent } from '../producers/processed-data--producer';
-import { healthDataTopic } from '../topics/create-topics';
 import { kafka } from '../utils/broker-client';
-
-const consumerGroup = 'groupForDataConsumers';
+import {
+  consumerGroupForHealthDataTopic,
+  healthDataTopic,
+} from '../utils/consts';
+import { ProcessedDataPayload } from '../utils/types';
 
 async function run() {
   try {
-    const consumer = kafka.consumer({ groupId: consumerGroup });
+    const consumer = kafka.consumer({
+      groupId: consumerGroupForHealthDataTopic,
+    });
     await consumer.connect();
     console.log('Health data processor (consumer) connected successfully!');
 
@@ -17,13 +21,38 @@ async function run() {
 
     await consumer.run({
       eachMessage: async (result) => {
+        const value = JSON.parse(
+          result.message.value?.toString() || ''
+        ) as unknown as ProcessedDataPayload;
         console.log(
-          `Received message: ${result.message.value} on partition ${result.partition}`
+          `Received message: ${JSON.stringify(value)} on partition ${
+            result.partition
+          }`
         );
         console.log('Processing the data...');
         setTimeout(() => {
-          sendEvent(result.message.value);
-        }, 5000);
+          if (value.metricType === 'heartRate') {
+            sendEvent({
+              metricType: value.metricType,
+              metricValue: value.metricValue,
+              result:
+                value.metricValue > 110 || value.metricValue < 40
+                  ? 'You need to visit a doctor!'
+                  : 'Normal heart beats!',
+            });
+          } else {
+            sendEvent({
+              metricType: value.metricType,
+              metricValue: value.metricValue,
+              result:
+                value.metricValue > 10
+                  ? 'Sleep Champion!'
+                  : value.metricValue < 7
+                  ? 'You need to sleep more!'
+                  : 'Sleep Champion!',
+            });
+          }
+        }, 1000);
       },
     });
   } catch (error) {
