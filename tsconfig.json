@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "noImplicitAny": false,
+      "allowSyntheticDefaultImports": true,
+      "alwaysStrict": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": false,
+      "noFallthroughCasesInSwitch": true,
+      "resolveJsonModule": true,
+      "skipLibCheck": true,
+      "lib": ["es2020"],
+      "module": "commonjs",
+      "noEmitOnError": true,
+      "target": "es2020",
+      "strict": true,
+      "baseUrl": "kafka-tutorial"
+
+    },
+    "include": ["src/*"],
+    "exclude": ["node_modules"]
+  }
+  

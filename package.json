@@ -1,0 +1,26 @@
+{
+  "name": "kafka-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create-topics": "ts-node src/topics/create-topics",
+    "produce-data-by-smart-watch": "ts-node src/producers/smart-watch--producer",
+    "consume-data-by-mobile-phone": "ts-node src/consumers/mobile-phone--consumer",
+    "consume-data-by-data-processor-server": "ts-node src/consumers/health-data-processor--consumer"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "env-var": "^7.4.1",
+    "kafkajs": "^2.2.4",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.9",
+    "prettier": "3.0.3"
+  }
+}
