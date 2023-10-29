@@ -20,17 +20,18 @@
 
 `cp .env.example ./.env`: Copy or replace the environment variables if you have different configurations
 
-`npm install`: install depds
+`npm install`: install dependencies
 
 ### Start testing: open multiple terminals and run the following
 
 - ***Topics:***
   - `npm run create-topics`: This command creates two topics inside the broker: `health_data` and `processed_health_data`
 - ***Producers:***
-  - `npm run produce-data-by-smart-watch heartRate 123` or `npm run produce-data-by-smart-watch sleepDuration 8`: run any of these commands when you want your terminal to act as the smart watch sending metrics to the server. The tutorial supports two type of metrics `heartRate` and `sleepDuration`. The second argument is also required and it specifies the value of the metric.
+  - `npm run produce-data-by-smart-watch {metricType} {metricValue}`: run this command when you want your terminal to act as the smart watch sending metrics to the server. The tutorial supports two type of metrics `heartRate` and `sleepDuration`. The `metricValue` specifies the value of the metric. 
+  Eg. `npm run produce-data-by-smart-watch sleepDuration 8`
 - ***Consumers:***
-  - `npm run consume-data-by-data-processor-server`: You can run this command in two different terminals at max, and the zookeeper will decided which instance will read from which partition inside the health_data topic. If one consumer of this instance is executed it will be responsible for events inside both partitions.
-  - `npm run consume-data-by-mobile-phone`: This command will be used by the mobile phone to consume data after it being processed and push to the processed_health_data topic. Since this consumer is reading from a different topic it cannot be inside the same consumer group as the `consume-data-by-data-processor-server` consumer
+  - `npm run consume-data-by-data-processor-server`: You can run this command in two different terminals at max, and the zookeeper will decided which instance will read from which partition inside the `health_data` topic. If one consumer of this instance is executed it will be responsible for processing events from both partitions.
+  - `npm run consume-data-by-mobile-phone`: This command will serve as it is the mobile phone consuming data after it being processed and pushed to the `processed_health_data` topic. Note: Since this consumer is reading from a different topic it cannot be inside the same consumer group as the `data-processor-server` consumer
 
 ### This tutorial showcase the following kafka components
 
