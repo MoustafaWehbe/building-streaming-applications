@@ -45,14 +45,12 @@ async function run() {
               metricType: value.metricType,
               metricValue: value.metricValue,
               result:
-                value.metricValue > 10
-                  ? 'Sleep Champion!'
-                  : value.metricValue < 7
+                value.metricValue < 7
                   ? 'You need to sleep more!'
                   : 'Sleep Champion!',
             });
           }
-        }, 1000);
+        }, 4000);
       },
     });
   } catch (error) {
